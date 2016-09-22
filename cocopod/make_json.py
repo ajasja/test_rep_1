@@ -5,8 +5,10 @@ Tools to generate a json file with infomration about segments.
 """
 from __future__ import print_function, division, absolute_import
 import cocopod.utils as u
+import cocopod.segment_assignment as sa
 import yaml
 import re
+import os
 
 def load_pairs(yaml_str):
     """Loads a yaml string and returns a list of pairs"""
@@ -99,8 +101,14 @@ def generate_json(name, entire_sequence, segments_str, pairs, out_name=None):
         pair_name = get_other_segment_name(pair, seg_name)
         chain = get_segment_chain(pair, seg_name)
         
-
-
+#determining the heptad position of the starting residue in a segment
+        path = u.relative_to(__file__,'')
+        seg_to_seq = sa.seq_to_seq_map(os.path.join(path, 'segments.xlsx'))
+        pair_1_seq = seg_to_seq[seg_name].replace(" ","")
+        template_start, target_start = u.align(pair_1_seq, seq, 6, 6)
+        whole_register = ['c','d','e','f','g','a','b']
+        register = whole_register[template_start%7]        
+       
         segments[n]={"id":n+1, "name": seg_name, 
                      "sequence" :seq, 
                      "start" : start+1,
@@ -111,10 +119,11 @@ def generate_json(name, entire_sequence, segments_str, pairs, out_name=None):
                      "pair_type": pair['type'],
                      "pdb_template" : pair['template'],
                      "pdb_chain" : chain,
-                     "color" : pair.get('color',"")
+                     "color" : pair.get('color',""),
+                     "register" : register
                     }
        
-    #find tha pair IDs
+    #find the pair IDs
     for n1 in range(len(segments)):
         for n2 in range(n1+1,len(segments)):
             if segments[n1]['name'] == segments[n2]['pair_name']:

@@ -99,7 +99,7 @@ def seq_to_seq_map(dict_or_file_or_dataframe):
     peps = {}
     for n, pep in df.iterrows():
 
-        peps[pep.PID] = pep.Sequence.replace('-', '').strip()
+        peps[pep.PID] = pep.Sequence.strip()
     return peps
     
     
@@ -118,7 +118,7 @@ def get_annotated_sequence(segments, seg_to_seq, linkers="GSGPG", N_tag="", C_ta
                                
     max_seg_len = max([len(seg_to_seq[s]) for s in segments])
                            
-    aa_segments = [seg_to_seq[s].ljust(max_seg_len)  +"\t|"+s for s in segments]
+    aa_segments = [seg_to_seq[s].ljust(max_seg_len).replace('-', '')  +"\t|"+s for s in segments]
     
     lines = [N_tag] + list(u.roundrobin(aa_segments, linkers)) + [C_tag]
     lines = "\n".join(lines)
@@ -214,7 +214,7 @@ def segment_assignment_gui(topology, pairs_parallel=pairs_parallel_def,
         if widget_dropdown_dict[topology[0].upper()].value in segment_strengths_parallel[-2:]:
             print("Warning: first segment has weak binding! It is not advisable to put it at the beginning of the chain.")
         if widget_dropdown_dict[topology[-1].upper()].value in segment_strengths_parallel[-2:]:
-            print("Warning: las segment has weak binding! It is not advisable to put it at the end of the chain.")              
+            print("Warning: last segment has weak binding! It is not advisable to put it at the end of the chain.")              
                   
         try:
             segment_assignments_to_dict(asignment_textbox.value)        
