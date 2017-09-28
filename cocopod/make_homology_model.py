@@ -60,9 +60,12 @@ env.libs.topology.read('${LIB}/top_heav.lib')
 env.libs.parameters.read('${LIB}/par.lib')
 
 
-env.io.atom_files_directory = ['.','..','building_blocks', 
+env.io.atom_files_directory = ['.','..','building_blocks',os.path.abspath(u.relative_to(__file__,'./../../building_blocks')),
                                os.path.abspath(u.relative_to(__file__,'./../building_blocks'))] #where to read atom files
 env.edat.dynamic_sphere = True
+env.edat.dynamic_lennard = False
+env.edat.dynamic_coulomb = True
+env.edat.relative_dielectric = 80
 
 md_opt_dict = \
     {'very_fast'  : refine.very_fast,

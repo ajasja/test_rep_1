@@ -51,6 +51,9 @@ env.libs.parameters.read('${LIB}/par.lib')
 
 env.io.atom_files_directory = ['./out','./building_blocks'] #where to read atom files
 env.edat.dynamic_sphere = True
+env.edat.dynamic_lennard = False
+env.edat.dynamic_coulomb = True
+env.edat.relative_dielectric = 80
 
 # read model file
 mdl = complete_pdb(env, args.helix) 
