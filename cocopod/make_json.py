@@ -103,8 +103,8 @@ def generate_json(name, entire_sequence, segments_str, pairs, out_name=None):
         
 #determining the heptad position of the starting residue in a segment
         path = u.relative_to(__file__,'')
-        seg_to_seq = sa.seq_to_seq_map(os.path.join(path, 'segments.xlsx'))
-        pair_1_seq = seg_to_seq[seg_name].replace(" ","")
+        seg_to_seq = sa.seq_to_seq_map(os.path.join(path, '../examples/TET/segments.xlsx'))
+        pair_1_seq = seg_to_seq[seg_name.partition("_")[0]].replace(" ","")
         template_start, target_start = u.align(pair_1_seq, seq, 6, 6)
         whole_register = ['c','d','e','f','g','a','b']
         register = whole_register[template_start%7]        
